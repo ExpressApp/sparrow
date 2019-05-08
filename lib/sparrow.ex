@@ -71,6 +71,10 @@ defmodule Sparrow do
     config(:tags, %{})
   end
 
+  def release do
+    config(:release, nil)
+  end
+
   def server_name do
     config(:server_name)
   end

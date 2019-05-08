@@ -7,7 +7,6 @@ defmodule Sparrow.Event do
 
   defstruct [
     event_id: nil,
-    # culprit: nil, # TODO deprecated
     timestamp: nil,
     message: nil,
     tags: %{},
@@ -35,6 +34,7 @@ defmodule Sparrow.Event do
       tags: Sparrow.tags(),
       server_name: Sparrow.server_name(),
       environment: Sparrow.environment(),
+      release: Sparrow.release()
     }
   end
 
