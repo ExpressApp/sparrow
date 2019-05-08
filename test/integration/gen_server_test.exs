@@ -1,5 +1,5 @@
 defmodule Integration.GenServerTest do
-  use IntegrationCase
+  use Sparrow.IntegrationCase
 
   alias Sparrow.Support.GenServer, as: GS
 
@@ -33,10 +33,10 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: :gen_server, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: Sparrow.Support.GenServer, vars: %{}}
+          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib"},
+          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
 
       assert report.exception ==
@@ -56,10 +56,10 @@ defmodule Integration.GenServerTest do
 
       assert report.stacktrace.frames ==
         [
-          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: :gen_server, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: Sparrow.Support.GenServer, vars: %{}}
+          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib"},
+          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
     end
 
@@ -85,8 +85,8 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", module: :gen_server, vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
         ]
 
       assert report.exception ==
@@ -125,10 +125,10 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", module: :gen_server, vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
 
       assert report.exception == [%{type: "ArgumentError", value: "argument error"}]
@@ -146,10 +146,10 @@ defmodule Integration.GenServerTest do
 
       assert report.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: :gen_server, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
     end
 
@@ -175,10 +175,10 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", module: :gen_server, vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
 
       assert report.exception == [%{type: "{:badmatch, 2}", value: "(exit) {:badmatch, 2}"}]
@@ -196,10 +196,10 @@ defmodule Integration.GenServerTest do
 
       assert report.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: :gen_server, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
     end
 
@@ -225,8 +225,8 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", module: :gen_server, vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
         ]
 
       assert report.exception ==
@@ -274,10 +274,10 @@ defmodule Integration.GenServerTest do
 
       assert crash.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", module: :gen_server, vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
 
       assert report.exception == [%{type: "ArgumentError", value: "argument error"}]
@@ -295,10 +295,10 @@ defmodule Integration.GenServerTest do
 
       assert report.stacktrace.frames ==
         [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: :gen_server, vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: :gen_server, vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: Sparrow.Support.GenServer, vars: %{}}
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
+          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
+          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
     end
   end

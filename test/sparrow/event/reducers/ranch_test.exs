@@ -14,16 +14,16 @@ defmodule Sparrow.Event.Reducers.RanchTest do
 
     assert event.stacktrace.frames ==
       [
-        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: :proc_lib, vars: %{}},
-        %{filename: "/my_app/deps/cowboy/src/cowboy_stream_h.erl", function: ":cowboy_stream_h.request_process/3", lineno: 274, module: :cowboy_stream_h, vars: %{}},
-        %{filename: "/my_app/deps/cowboy/src/cowboy_stream_h.erl", function: ":cowboy_stream_h.execute/3", lineno: 296, module: :cowboy_stream_h, vars: %{}},
-        %{filename: "/my_app/deps/cowboy/src/cowboy_handler.erl", function: ":cowboy_handler.execute/2", lineno: 41, module: :cowboy_handler, vars: %{}},
-        %{filename: "lib/phoenix/endpoint/cowboy2_handler.ex", function: "Phoenix.Endpoint.Cowboy2Handler.init/2", lineno: 33, module: Phoenix.Endpoint.Cowboy2Handler, vars: %{}},
-        %{filename: "lib/my_app_web/endpoint.ex", function: "MyAppWeb.Endpoint.call/2", lineno: 1, module: MyAppWeb.Endpoint, vars: %{}},
-        %{filename: "lib/plug/debugger.ex", function: "MyAppWeb.Endpoint.\"call (overridable 3)\"/2", lineno: 122, module: MyAppWeb.Endpoint, vars: %{}},
-        %{filename: "lib/my_app_web/endpoint.ex", function: "MyAppWeb.Endpoint.plug_builder_call/2", lineno: 1, module: MyAppWeb.Endpoint, vars: %{}},
-        %{filename: "lib/phoenix/router.ex", function: "MyAppWeb.Router.call/2", lineno: 304, module: MyAppWeb.Router, vars: %{}},
-        %{filename: "lib/my_app_web/router.ex", function: "MyAppWeb.Router.__match_route__/4", lineno: 1, module: MyAppWeb.Router, vars: %{}}
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+        %{filename: "/my_app/deps/cowboy/src/cowboy_stream_h.erl", function: ":cowboy_stream_h.request_process/3", lineno: 274, module: ":cowboy_stream_h", vars: %{}},
+        %{filename: "/my_app/deps/cowboy/src/cowboy_stream_h.erl", function: ":cowboy_stream_h.execute/3", lineno: 296, module: ":cowboy_stream_h", vars: %{}},
+        %{filename: "/my_app/deps/cowboy/src/cowboy_handler.erl", function: ":cowboy_handler.execute/2", lineno: 41, module: ":cowboy_handler", vars: %{}},
+        %{filename: "lib/phoenix/endpoint/cowboy2_handler.ex", function: "Phoenix.Endpoint.Cowboy2Handler.init/2", lineno: 33, module: "Phoenix.Endpoint.Cowboy2Handler", vars: %{}},
+        %{filename: "lib/my_app_web/endpoint.ex", function: "MyAppWeb.Endpoint.call/2", lineno: 1, module: "MyAppWeb.Endpoint", vars: %{}},
+        %{filename: "lib/plug/debugger.ex", function: "MyAppWeb.Endpoint.\"call (overridable 3)\"/2", lineno: 122, module: "MyAppWeb.Endpoint", vars: %{}},
+        %{filename: "lib/my_app_web/endpoint.ex", function: "MyAppWeb.Endpoint.plug_builder_call/2", lineno: 1, module: "MyAppWeb.Endpoint", vars: %{}},
+        %{filename: "lib/phoenix/router.ex", function: "MyAppWeb.Router.call/2", lineno: 304, module: "MyAppWeb.Router", vars: %{}},
+        %{filename: "lib/my_app_web/router.ex", function: "MyAppWeb.Router.__match_route__/4", lineno: 1, module: "MyAppWeb.Router", vars: %{}}
       ]
 
     assert event.extra == %{plug: MyAppWeb.Endpoint, conn: conn}

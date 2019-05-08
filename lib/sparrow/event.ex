@@ -132,7 +132,7 @@ defmodule Sparrow.Event do
 
       %{filename: file && to_string(file),
         function: Exception.format_mfa(mod, function, arity),
-        module: mod,
+        module: inspect(mod),
         lineno: line_number,
         vars: args_from_stacktrace([line])}
     end)

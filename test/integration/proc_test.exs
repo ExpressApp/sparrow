@@ -1,5 +1,5 @@
 defmodule Integration.ProcTest do
-  use IntegrationCase
+  use Sparrow.IntegrationCase
 
   describe "crashed with" do
     setup do
@@ -35,7 +35,7 @@ defmodule Integration.ProcTest do
         [
           %{filename: "test/integration/proc_test.exs",
             function: "anonymous fn/0 in Integration.ProcTest.\"test crashed with throw\"/1",
-            lineno: 19, module: Integration.ProcTest, vars: %{}}
+            lineno: 19, module: "Integration.ProcTest", vars: %{}}
         ]
     end
 
@@ -60,7 +60,7 @@ defmodule Integration.ProcTest do
         [
           %{filename: "test/integration/proc_test.exs",
             function: "anonymous fn/0 in Integration.ProcTest.\"test crashed with raise\"/1",
-            lineno: 44, module: Integration.ProcTest, vars: %{}}
+            lineno: 44, module: "Integration.ProcTest", vars: %{}}
         ]
     end
 
@@ -85,7 +85,7 @@ defmodule Integration.ProcTest do
         [
           %{filename: "test/integration/proc_test.exs",
             function: "anonymous fn/1 in Integration.ProcTest.\"test crashed with badmatch\"/1",
-            lineno: 69, module: Integration.ProcTest, vars: %{}}
+            lineno: 69, module: "Integration.ProcTest", vars: %{}}
         ]
     end
   end
