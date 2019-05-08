@@ -17,7 +17,7 @@ defmodule Integration.TaskTest do
       end)
 
       assert_receive crash = %Sparrow.Event{extra: %{initial_call: _}}
-      refute_receive %Sparrow.Event{}
+      assert_receive report = %Sparrow.Event{}
 
       assert crash.exception ==
         [%{type: ":task_crashed", value: "(exit) :task_crashed"}]
@@ -39,6 +39,19 @@ defmodule Integration.TaskTest do
           %{filename: "lib/task/supervised.ex", function: "Task.Supervised.invoke_mfa/2", lineno: 90, module: "Task.Supervised", vars: %{}},
           %{filename: "test/integration/task_test.exs", function: "anonymous fn/0 in Integration.TaskTest.\"test crashed with exit\"/1", lineno: 16, module: "Integration.TaskTest", vars: %{}}
         ]
+
+      assert report.exception ==
+        [%{type: ":task_crashed", value: "(exit) :task_crashed"}]
+
+      assert report.message ==
+        String.trim("""
+        Child :undefined of Supervisor #{inspect(__MODULE__)} terminated
+        ** (exit) :task_crashed
+        Pid: #{inspect(pid)}
+        Start Call: Task.Supervised.start_link/?
+        """)
+
+      assert report.stacktrace.frames == []
     end
 
     test "raise" do
@@ -47,7 +60,7 @@ defmodule Integration.TaskTest do
       end)
 
       assert_receive crash = %Sparrow.Event{extra: %{initial_call: _}}
-      refute_receive %Sparrow.Event{}
+      assert_receive report = %Sparrow.Event{}
 
       assert crash.exception ==
         [%{type: "RuntimeError", value: "test crash"}]
@@ -56,7 +69,7 @@ defmodule Integration.TaskTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (RuntimeError) test crash
-            test/integration/task_test.exs:46: anonymous fn/0 in Integration.TaskTest."test crashed with raise"/1
+            test/integration/task_test.exs:59: anonymous fn/0 in Integration.TaskTest."test crashed with raise"/1
             (elixir) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
             (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: anonymous fn/0 in Integration.TaskTest."test crashed with raise"/1
@@ -67,7 +80,29 @@ defmodule Integration.TaskTest do
         [
           %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
           %{filename: "lib/task/supervised.ex", function: "Task.Supervised.invoke_mfa/2", lineno: 90, module: "Task.Supervised", vars: %{}},
-          %{filename: "test/integration/task_test.exs", function: "anonymous fn/0 in Integration.TaskTest.\"test crashed with raise\"/1", lineno: 46, module: "Integration.TaskTest", vars: %{}}
+          %{filename: "test/integration/task_test.exs", function: "anonymous fn/0 in Integration.TaskTest.\"test crashed with raise\"/1", lineno: 59, module: "Integration.TaskTest", vars: %{}}
+        ]
+
+      assert report.exception ==
+        [%{type: "RuntimeError", value: "test crash"}]
+
+      assert report.message ==
+        String.trim("""
+        Child :undefined of Supervisor #{inspect(__MODULE__)} terminated
+        ** (exit) an exception was raised:
+            ** (RuntimeError) test crash
+                test/integration/task_test.exs:59: anonymous fn/0 in Integration.TaskTest.\"test crashed with raise\"/1
+                (elixir) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
+                (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+        Pid: #{inspect(pid)}
+        Start Call: Task.Supervised.start_link/?
+        """)
+
+      assert report.stacktrace.frames ==
+        [
+          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
+          %{filename: "lib/task/supervised.ex", function: "Task.Supervised.invoke_mfa/2", lineno: 90, module: "Task.Supervised", vars: %{}},
+          %{filename: "test/integration/task_test.exs", function: "anonymous fn/0 in Integration.TaskTest.\"test crashed with raise\"/1", lineno: 59, module: "Integration.TaskTest", vars: %{}}
         ]
     end
   end

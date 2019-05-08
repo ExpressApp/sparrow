@@ -152,9 +152,11 @@ defmodule Sparrow.Catcher do
     :skip
   end
 
-  # TODO do we need supervisor child_terminated?
-  defp report({:supervisor, _}, _data) do
-    :skip
+  defp report({:supervisor, _}, data) do
+    data = Enum.into(data, %{})
+    {reason, extra} = Map.pop(data, :reason)
+
+    {:exit, reason, [], extra}
   end
 
   defp report({:application_controller, :progress}, _data) do
@@ -164,6 +166,14 @@ defmodule Sparrow.Catcher do
   # TODO do we need application exit?
   defp report({:application_controller, :exit}, _data) do
     :skip
+  end
+
+  defp report({:error_logger, :error_report}, data) do
+    data = Enum.into(data, %{})
+    {reason, extra} = Map.pop(data, :reason)
+    {reason, stacktrace} = Sparrow.format_reason(reason)
+
+    {:exit, reason, stacktrace, extra}
   end
 
   defp report(_type, _data) do
