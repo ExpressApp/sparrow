@@ -1,5 +1,5 @@
 defmodule Integration.ProcTest do
-  use Sparrow.IntegrationCase
+  use Sparrow.IntegrationCase, async: false
 
   describe "crashed with" do
     setup do

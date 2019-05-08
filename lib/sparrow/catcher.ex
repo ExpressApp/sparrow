@@ -166,6 +166,10 @@ defmodule Sparrow.Catcher do
     :skip
   end
 
+  defp report(_type, _data) do
+    :skip
+  end
+
   defp format(format, args) do
     reason =
       format

@@ -58,6 +58,7 @@ defmodule Sparrow do
   def event_reducers do
     config(:event_reducers, [
       Sparrow.Event.Reducers.Erlang,
+      Sparrow.Event.Reducers.Elixir,
       Sparrow.Event.Reducers.Ranch,
     ])
   end
