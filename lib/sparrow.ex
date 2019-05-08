@@ -1,4 +1,16 @@
 defmodule Sparrow do
+  @compile {:inline, current_stacktrace: 0}
+
+  def capture(message, opts \\ []) do
+    event =
+      Sparrow.Event.new()
+      |> Sparrow.Event.put_message(message)
+      |> Sparrow.Event.put_stacktrace(Keyword.get(opts, :stacktrace, current_stacktrace()))
+      |> Sparrow.Event.put_extra(Keyword.get(opts, :extra, %{}))
+
+    Sparrow.Client.send(event)
+  end
+
   # reducer helpers
 
   def format_reason({maybe_exception, [_ | _] = maybe_stacktrace} = reason) do
@@ -23,6 +35,14 @@ defmodule Sparrow do
 
   defp stacktrace_entry?(_) do
     false
+  end
+
+  def current_stacktrace do
+    case Process.info(self(), :current_stacktrace) do
+      {:current_stacktrace, [{Process, :info, 2, _}, {Sparrow, :capture, 2, _} | stacktrace]} -> stacktrace
+      {:current_stacktrace, stacktrace} -> stacktrace
+      _ -> []
+    end
   end
 
   # configuration
