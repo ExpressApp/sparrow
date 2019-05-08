@@ -28,7 +28,7 @@ defmodule Sparrow.Event do
     modules: %{}
   ]
 
-  def new(unix_timestamp \\ System.system_time(:second)) do
+  def new(unix_timestamp \\ System.system_time(:microsecond)) do
     %__MODULE__{
       event_id: event_id(),
       timestamp: timestamp(unix_timestamp),
