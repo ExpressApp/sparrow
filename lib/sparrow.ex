@@ -1,4 +1,32 @@
 defmodule Sparrow do
+  # reducer helpers
+
+  def format_reason({maybe_exception, [_ | _] = maybe_stacktrace} = reason) do
+    if Enum.all?(maybe_stacktrace, &stacktrace_entry?/1) do
+      {maybe_exception, maybe_stacktrace}
+    else
+      {reason, []}
+    end
+  end
+
+  def format_reason(reason) do
+    {reason, []}
+  end
+
+  defp stacktrace_entry?({_module, _fun, _arity, _location}) do
+    true
+  end
+
+  defp stacktrace_entry?({_fun, _arity, _location}) do
+    true
+  end
+
+  defp stacktrace_entry?(_) do
+    false
+  end
+
+  # configuration
+
   def dsn do
     config(:dsn)
   end
@@ -9,6 +37,7 @@ defmodule Sparrow do
 
   def event_reducers do
     config(:event_reducers, [
+      Sparrow.Event.Reducers.Erlang,
       Sparrow.Event.Reducers.Ranch,
     ])
   end

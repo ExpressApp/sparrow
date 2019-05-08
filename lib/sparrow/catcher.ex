@@ -164,11 +164,6 @@ defmodule Sparrow.Catcher do
     :skip
   end
 
-  defp format(~c'Error in process ~p with exit value:~n~p~n', [pid, reason]) do
-    {reason, stacktrace} = format_reason(reason)
-    {:error, reason, stacktrace, %{pid: pid}}
-  end
-
   defp format(format, args) do
     reason =
       format
@@ -182,12 +177,12 @@ defmodule Sparrow.Catcher do
   # ...
 
   defp report_gen_server_terminate(%{reason: reason} = report) do
-    {reason, stacktrace} = format_reason(reason)
+    {reason, stacktrace} = Sparrow.format_reason(reason)
     {:exit, reason, stacktrace, Map.take(report, [:name, :state, :last_message])}
   end
 
   defp report_gen_event_terminate(%{reason: reason} = report) do
-    {reason, stacktrace} = format_reason(reason)
+    {reason, stacktrace} = Sparrow.format_reason(reason)
     {:exit, reason, stacktrace, Map.take(report, [:name, :state, :last_message])}
   end
 
@@ -196,31 +191,5 @@ defmodule Sparrow.Catcher do
     {{kind, reason, stacktrace}, extra} = Map.pop(crashed, :error_info)
 
     {kind, reason, stacktrace, extra}
-  end
-
-  # ...
-
-  defp format_reason({maybe_exception, [_ | _] = maybe_stacktrace} = reason) do
-    if Enum.all?(maybe_stacktrace, &stacktrace_entry?/1) do
-      {maybe_exception, maybe_stacktrace}
-    else
-      {reason, []}
-    end
-  end
-
-  defp format_reason(reason) do
-    {reason, []}
-  end
-
-  defp stacktrace_entry?({_module, _fun, _arity, _location}) do
-    true
-  end
-
-  defp stacktrace_entry?({_fun, _arity, _location}) do
-    true
-  end
-
-  defp stacktrace_entry?(_) do
-    false
   end
 end
