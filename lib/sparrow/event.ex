@@ -24,7 +24,8 @@ defmodule Sparrow.Event do
     user: nil,
     breadcrumbs: [],
     fingerprint: [],
-    modules: nil
+    modules: nil,
+    contexts: nil
   ]
 
   def new(unix_timestamp \\ System.system_time(:microsecond)) do
@@ -34,7 +35,11 @@ defmodule Sparrow.Event do
       tags: Sparrow.tags(),
       server_name: Sparrow.server_name(),
       environment: Sparrow.environment(),
-      release: Sparrow.release()
+      release: Sparrow.release(),
+      contexts: %{
+        erlang: %{type: "runtime", name: "Erlang", version: System.otp_release()},
+        elixir: %{type: "runtime", name: "Elixir", version: System.version()},
+      }
     }
   end
 
