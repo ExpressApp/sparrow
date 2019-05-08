@@ -19,12 +19,12 @@ defmodule Sparrow.Event do
     stacktrace: %{
       frames: []
     },
-    request: %{},
+    request: nil,
     extra: %{},
-    user: %{},
+    user: nil,
     breadcrumbs: [],
     fingerprint: [],
-    modules: %{}
+    modules: nil
   ]
 
   def new(unix_timestamp \\ System.system_time(:microsecond)) do
@@ -90,6 +90,7 @@ defmodule Sparrow.Event do
       |> truncate_message()
       |> Map.from_struct()
       |> maybe_drop_stacktrace()
+      |> drop_nil_fields([:server_name, :release, :request, :user, :modules])
 
     Sparrow.json_library().encode(event_json)
   end
@@ -100,6 +101,15 @@ defmodule Sparrow.Event do
 
   defp truncate_message(%__MODULE__{message: message} = event) do
     %__MODULE__{event | message: String.slice(message, 0..@max_message_length)}
+  end
+
+  defp drop_nil_fields(event_map, fields) do
+    Enum.reduce(fields, event_map, fn(field, acc) ->
+      case Map.get(event_map, field) do
+        nil -> Map.delete(acc, field)
+        _ -> acc
+      end
+    end)
   end
 
   defp maybe_drop_stacktrace(%{stacktrace: %{frames: []}} = event_map) do
