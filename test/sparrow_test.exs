@@ -8,7 +8,7 @@ defmodule SparrowTest do
       message = "test message"
 
       expect(Sparrow.ClientMock, :request, fn(_url, _headers, body, _opts) ->
-        assert {:ok, %{"message" => ^message}} = Jason.decode(body)
+        assert %{"message" => ^message} = decode(body)
 
         {:ok, ~s({"id":0})}
       end)
@@ -18,7 +18,7 @@ defmodule SparrowTest do
 
     test "contains stacktrace started from current location" do
       expect(Sparrow.ClientMock, :request, fn(_url, _headers, body, _opts) ->
-        assert {:ok, %{"stacktrace" => %{"frames" => stacktrace}}} = Jason.decode(body)
+        assert %{"stacktrace" => %{"frames" => stacktrace}} = decode(body)
 
         assert [
           %{"filename" => "lib/ex_unit/runner.ex", "function" => "anonymous fn/4 in ExUnit.Runner.spawn_test_monitor/4", "lineno" => 306, "module" => "ExUnit.Runner", "vars" => %{}},
@@ -35,7 +35,7 @@ defmodule SparrowTest do
 
     test "with custom stacktrace" do
       expect(Sparrow.ClientMock, :request, fn(_url, _headers, body, _opts) ->
-        assert {:ok, json} = Jason.decode(body)
+        assert json = decode(body)
         refute Map.get(json, "stacktrace")
 
         {:ok, ~s({"id":0})}
@@ -43,5 +43,9 @@ defmodule SparrowTest do
 
       assert {:ok, _id} = Sparrow.capture("test", stacktrace: [])
     end
+  end
+
+  defp decode(binary) do
+    binary |> Base.decode64!() |> :zlib.uncompress() |> Jason.decode!()
   end
 end

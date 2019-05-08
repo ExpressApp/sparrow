@@ -10,7 +10,7 @@ defmodule Sparrow.Client do
   def send(%Sparrow.Event{} = event) do
     with {:ok, endpoint, headers} <- get_headers_and_endpoint(),
          {:ok, encoded} <- Sparrow.Event.encode(event),
-         {:ok, body} <- Sparrow.client().request(endpoint, headers, encoded, []),
+         {:ok, body} <- Sparrow.client().request(endpoint, headers, compress(encoded), []),
          {:ok, json} <- Sparrow.json_library().decode(body)
     do
       {:ok, Map.get(json, "id")}
@@ -26,6 +26,10 @@ defmodule Sparrow.Client do
       {:ok, _, _, _ref} -> {:error, :unexpected_response}
       {:error, reason} -> {:error, reason}
     end
+  end
+
+  defp compress(binary) do
+    binary |> :zlib.compress() |> Base.encode64()
   end
 
   defp get_headers_and_endpoint do
