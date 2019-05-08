@@ -72,9 +72,15 @@ defmodule Sparrow.Event do
   end
 
   def put_plug_conn(event, %{__struct__: Plug.Conn} = conn) do
-    # TODO extract meta for sentry http interface
+    # TODO support `data` field
     # https://docs.sentry.io/development/sdk-dev/interfaces/http/
-    put_extra(event, %{conn: conn})
+    %__MODULE__{event | request: %{
+      url: URI.to_string(%URI{scheme: to_string(conn.scheme), host: conn.host, path: conn.request_path}),
+      method: conn.method,
+      query_string: conn.query_string,
+      headers: Enum.into(conn.req_headers, %{}),
+      env: Enum.map(conn.assigns, fn({k, v}) -> {k, inspect(v)} end),
+    }}
   end
 
   def encode(event) do

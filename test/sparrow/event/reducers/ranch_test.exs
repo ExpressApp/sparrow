@@ -26,7 +26,15 @@ defmodule Sparrow.Event.Reducers.RanchTest do
         %{filename: "lib/my_app_web/router.ex", function: "MyAppWeb.Router.__match_route__/4", lineno: 1, module: "MyAppWeb.Router", vars: %{}}
       ]
 
-    assert event.extra == %{plug: MyAppWeb.Endpoint, conn: conn}
+    assert event.extra == %{plug: MyAppWeb.Endpoint}
+
+    assert event.request == %{
+      url: "http://www.example.com/path",
+      method: "GET",
+      headers: %{"content-type" => "multipart/mixed; boundary=plug_conn_test"},
+      query_string: "",
+      env: []
+    }
   end
 
   defp log_event(message) do
