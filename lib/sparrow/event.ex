@@ -7,6 +7,7 @@ defmodule Sparrow.Event do
 
   defstruct [
     event_id: nil,
+    project: nil,
     timestamp: nil,
     message: nil,
     tags: %{},

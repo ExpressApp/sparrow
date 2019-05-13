@@ -8,7 +8,7 @@ defmodule Sparrow do
       |> Sparrow.Event.put_stacktrace(Keyword.get(opts, :stacktrace, current_stacktrace()))
       |> Sparrow.Event.put_extra(Keyword.get(opts, :extra, %{}))
 
-    Sparrow.Client.send(event)
+    Sparrow.Client.send(event, opts)
   end
 
   # reducer helpers

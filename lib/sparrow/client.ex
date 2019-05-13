@@ -2,14 +2,15 @@ defmodule Sparrow.Client do
   @moduledoc false
   @behaviour Sparrow.Client.Behaviour
 
+  @dsn_regex ~r/(?<scheme>https?:\/\/)(?<public>\w+)(:(?<secret>\w+))?@(?<uri>.+)\/(?<project>.+)/iu
   @version Mix.Project.config()[:version]
 
   @sentry_client "sparrow-elixir/#{@version}"
   @sentry_version 7
 
-  def send(%Sparrow.Event{} = event) do
-    with {:ok, endpoint, headers} <- get_headers_and_endpoint(),
-         {:ok, encoded} <- Sparrow.Event.encode(event),
+  def send(%Sparrow.Event{} = event, opts \\ []) do
+    with {:ok, endpoint, project, headers} <- get_credentials(opts),
+         {:ok, encoded} <- Sparrow.Event.encode(%Sparrow.Event{event | project: project}),
          {:ok, body} <- Sparrow.client().request(endpoint, headers, compress(encoded), []),
          {:ok, json} <- Sparrow.json_library().decode(body)
     do
@@ -32,9 +33,9 @@ defmodule Sparrow.Client do
     binary |> :zlib.compress() |> Base.encode64()
   end
 
-  defp get_headers_and_endpoint do
-    with {:ok, endpoint, public, secret} <- get_dsn() do
-      {:ok, endpoint, authorization_headers(public, secret)}
+  defp get_credentials(opts) do
+    with {:ok, endpoint, public, secret, project} <- get_dsn(opts) do
+      {:ok, endpoint, project, authorization_headers(public, secret)}
     end
   end
 
@@ -56,20 +57,15 @@ defmodule Sparrow.Client do
 
     query =
       data
+      |> Enum.reject(fn({_, value}) -> value in [nil, ""] end)
       |> Enum.map(fn({name, value}) -> "#{name}=#{value}" end)
       |> Enum.join(", ")
 
     "Sentry " <> query
   end
 
-  def get_dsn do
-    dsn = Sparrow.dsn()
-
-    with {:ok, %{userinfo: userinfo, host: host, port: port, path: path, scheme: scheme}} <- parse_dsn(dsn),
-         {:ok, public, secret} <- split_keys(userinfo)
-    do
-      {:ok, "#{scheme}://#{host}:#{port}/api/#{parse_project(path)}/store/", public, secret}
-    end
+  def get_dsn(opts) do
+    parse_dsn(Keyword.get(opts, :dsn, Sparrow.dsn()))
   end
 
   defp parse_dsn(val) when val in [nil, ""] do
@@ -77,24 +73,12 @@ defmodule Sparrow.Client do
   end
 
   defp parse_dsn(dsn) do
-    case URI.parse(dsn) do
-      %URI{userinfo: userinfo, path: path} = uri when is_binary(path) and is_binary(userinfo) ->
-        {:ok, uri}
+    case Regex.named_captures(@dsn_regex, dsn) do
+      %{"scheme" => scheme, "uri" => uri, "public" => public, "secret" => secret, "project" => project} ->
+        {:ok, scheme <> uri <> "/api/store/", public, secret, project}
 
-      %URI{} ->
+      _ ->
         {:error, :invalid_dsn}
-    end
-  end
-
-  defp parse_project(path) do
-    path |> String.replace_prefix("/", "")
-  end
-
-  defp split_keys(userinfo) do
-    case String.split(userinfo, ":", parts: 2) do
-      [public, secret] -> {:ok, public, secret}
-      [public] -> {:ok, public, nil}
-      _ -> {:error, :invalid_dsn}
     end
   end
 end
