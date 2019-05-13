@@ -6,6 +6,10 @@ defmodule Sparrow.Event.Reducers.Erlang do
     proc_crash(event, pid, Sparrow.format_reason(reason))
   end
 
+  def reduce(%{msg: {~c'Error in process ~p on node ~p with exit value:~n~p~n', [pid, _node, reason]}}, event) do
+    proc_crash(event, pid, Sparrow.format_reason(reason))
+  end
+
   def reduce(_, event) do
     event
   end
