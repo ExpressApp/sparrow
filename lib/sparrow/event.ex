@@ -44,34 +44,34 @@ defmodule Sparrow.Event do
     }
   end
 
-  def put_extra(event, extra) when is_map(extra) do
+  def put_extra(%__MODULE__{} = event, extra) when is_map(extra) do
     %__MODULE__{event | extra: Map.merge(event.extra, extra)}
   end
 
-  def put_message(event, message) when is_binary(message) do
+  def put_message(%__MODULE__{} = event, message) when is_binary(message) do
     %__MODULE__{event | message: message}
   end
 
-  def put_message(event, message) when is_list(message) do
+  def put_message(%__MODULE__{} = event, message) when is_list(message) do
     %__MODULE__{event | message: IO.iodata_to_binary(message)}
   end
 
-  def put_message(event, message) do
+  def put_message(%__MODULE__{} = event, message) do
     %__MODULE__{event | message: inspect(message)}
   end
 
-  def put_exception(event, kind, exception, stacktrace \\ []) do
+  def put_exception(%__MODULE__{} = event, kind, exception, stacktrace \\ []) do
     normalize = Exception.normalize(kind, exception, stacktrace)
     exception = [%{type: exception_type(normalize), value: exception_message(kind, normalize)}]
 
     %__MODULE__{event | exception: exception}
   end
 
-  def put_stacktrace(event, stacktrace) do
+  def put_stacktrace(%__MODULE__{} = event, stacktrace) do
     %__MODULE__{event | stacktrace: %{frames: stacktrace_to_frames(stacktrace)}}
   end
 
-  def put_error(event, reason) do
+  def put_error(%__MODULE__{} = event, reason) do
     {reason, stacktrace} = Sparrow.format_reason(reason)
 
     event
@@ -79,13 +79,13 @@ defmodule Sparrow.Event do
     |> put_stacktrace(stacktrace)
   end
 
-  def put_fingerprint(event, _kind, _reason, _pid) do
+  def put_fingerprint(%__MODULE__{} = event, _kind, _reason, _pid) do
     # TODO do we need to provide out own fingerprint for every event?
     # %__MODULE__{event | fingerprint: ["{{ default }}", inspect(kind), inspect(reason), inspect(pid)]}
     event
   end
 
-  def put_plug_conn(event, %{__struct__: Plug.Conn} = conn) do
+  def put_plug_conn(%__MODULE__{} = event, %{__struct__: Plug.Conn} = conn) do
     # TODO support `data` field
     # https://docs.sentry.io/development/sdk-dev/interfaces/http/
     %__MODULE__{event | request: %{
@@ -97,7 +97,7 @@ defmodule Sparrow.Event do
     }}
   end
 
-  def encode(event) do
+  def encode(%__MODULE__{} = event) do
     event_json =
       event
       |> encode_extra()
