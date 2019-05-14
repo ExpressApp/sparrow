@@ -36,24 +36,19 @@ defmodule Sparrow.Event.Reducers.Ranch do
 
   # reasons
 
-  defp ranch_reason(event, {{exception, stacktrace} = _reason, {mod, :call, [%{__struct__: Plug.Conn} = conn, _opts]}}) do
-    plug_conn(event, exception, stacktrace, mod, conn)
-  end
-
   defp ranch_reason(event, {reason, {mod, :call, [%{__struct__: Plug.Conn} = conn, _opts]}}) do
-    plug_conn(event, reason, [], mod, conn)
+    plug_conn(event, reason, mod, conn)
   end
 
   defp ranch_reason(event, reason) do
-    Sparrow.Event.put_exception(event, :error, reason, [])
+    Sparrow.Event.put_error(event, reason)
   end
 
   # parse conn metadata
 
-  defp plug_conn(event, reason, stacktrace, plug_mod, plug_conn) do
+  defp plug_conn(event, reason, plug_mod, plug_conn) do
     event
-    |> Sparrow.Event.put_exception(:error, reason, stacktrace)
-    |> Sparrow.Event.put_stacktrace(stacktrace)
+    |> Sparrow.Event.put_error(reason)
     |> Sparrow.Event.put_extra(%{plug: plug_mod})
     |> Sparrow.Event.put_plug_conn(plug_conn)
   end
