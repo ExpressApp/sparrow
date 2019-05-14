@@ -28,13 +28,13 @@ defmodule Sparrow.Catcher do
 
   rescue
     exception ->
-      Sparrow.capture("Sparrow error: #{Exception.message(exception)}", stacktrace: __STACKTRACE__)
+      Sparrow.capture("Sparrow error: #{Exception.message(exception)}", stacktrace: __STACKTRACE__, extra: %{log_event: log})
       Logger.warn("sparrow caused an exception\n" <>
         Exception.format(:error, exception, __STACKTRACE__))
 
   catch
     kind, value ->
-      Sparrow.capture("Sparrow error: #{inspect(kind)} #{inspect(value)}", stacktrace: __STACKTRACE__)
+      Sparrow.capture("Sparrow error: #{inspect(kind)} #{inspect(value)}", stacktrace: __STACKTRACE__, extra: %{log_event: log})
       Logger.warn("sparrow caused an error #{inspect(kind)} #{inspect(value)}\n" <>
         Exception.format_stacktrace(__STACKTRACE__))
 
