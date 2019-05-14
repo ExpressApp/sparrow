@@ -71,6 +71,14 @@ defmodule Sparrow.Event do
     %__MODULE__{event | stacktrace: %{frames: stacktrace_to_frames(stacktrace)}}
   end
 
+  def put_error(event, reason) do
+    {reason, stacktrace} = Sparrow.format_reason(reason)
+
+    event
+    |> put_exception(:error, reason, stacktrace)
+    |> put_stacktrace(stacktrace)
+  end
+
   def put_fingerprint(event, _kind, _reason, _pid) do
     # TODO do we need to provide out own fingerprint for every event?
     # %__MODULE__{event | fingerprint: ["{{ default }}", inspect(kind), inspect(reason), inspect(pid)]}
