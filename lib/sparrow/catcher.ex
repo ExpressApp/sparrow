@@ -155,8 +155,9 @@ defmodule Sparrow.Catcher do
   defp report({:supervisor, _}, data) do
     data = Enum.into(data, %{})
     {reason, extra} = Map.pop(data, :reason)
+    {reason, stacktrace} = Sparrow.format_reason(reason)
 
-    {:exit, reason, [], extra}
+    {:exit, reason, stacktrace, extra}
   end
 
   defp report({:application_controller, :progress}, _data) do
