@@ -93,7 +93,7 @@ defmodule Sparrow.Event do
       method: conn.method,
       query_string: conn.query_string,
       headers: Enum.into(conn.req_headers, %{}),
-      env: Enum.map(conn.assigns, fn({k, v}) -> {k, inspect(v)} end),
+      env: Enum.into(conn.assigns, %{}, fn({k, v}) -> {k, inspect(v)} end),
     }}
   end
 

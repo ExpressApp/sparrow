@@ -4,7 +4,7 @@ defmodule Sparrow.Event.Reducers.RanchTest do
   alias Sparrow.Event.Reducers.Ranch
 
   setup do
-    {:ok, conn: Plug.Test.conn(:get, "/path", %{}), event: Sparrow.Event.new()}
+    {:ok, conn: plug_conn(), event: Sparrow.Event.new()}
   end
 
   test "no route error", %{conn: conn, event: event} do
@@ -33,7 +33,7 @@ defmodule Sparrow.Event.Reducers.RanchTest do
       method: "GET",
       headers: %{"content-type" => "multipart/mixed; boundary=plug_conn_test"},
       query_string: "",
-      env: []
+      env: %{key: "{:some, [:value, 1, \"*\"]}"}
     }
   end
 
@@ -50,8 +50,13 @@ defmodule Sparrow.Event.Reducers.RanchTest do
       method: "GET",
       headers: %{"content-type" => "multipart/mixed; boundary=plug_conn_test"},
       query_string: "",
-      env: []
+      env: %{key: "{:some, [:value, 1, \"*\"]}"}
     }
+  end
+
+  defp plug_conn do
+    Plug.Test.conn(:get, "/path", %{})
+    |> Plug.Conn.assign(:key, {:some, [:value, 1, <<42>>]})
   end
 
   defp log_event(message) do
