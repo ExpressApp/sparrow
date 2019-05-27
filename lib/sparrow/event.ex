@@ -60,9 +60,9 @@ defmodule Sparrow.Event do
     %__MODULE__{event | message: inspect(message)}
   end
 
-  def put_exception(%__MODULE__{} = event, kind, exception, stacktrace \\ []) do
-    normalize = Exception.normalize(kind, exception, stacktrace)
-    exception = [%{type: exception_type(normalize), value: exception_message(kind, normalize)}]
+  def put_exception(%__MODULE__{} = event, _kind, exception, stacktrace \\ []) do
+    normalize = Exception.normalize(:error, exception, stacktrace)
+    exception = [%{type: exception_type(normalize), value: exception_message(:error, normalize)}]
 
     %__MODULE__{event | exception: exception}
   end
