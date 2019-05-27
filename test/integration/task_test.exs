@@ -20,7 +20,7 @@ defmodule Integration.TaskTest do
       assert_receive report = %Sparrow.Event{}
 
       assert crash.exception ==
-        [%{type: ":task_crashed", value: "(exit) :task_crashed"}]
+        [%{type: "ErlangError", value: "Erlang error: :task_crashed"}]
 
       assert crash.message =~
         String.trim("""
@@ -41,7 +41,7 @@ defmodule Integration.TaskTest do
         ]
 
       assert report.exception ==
-        [%{type: ":task_crashed", value: "(exit) :task_crashed"}]
+        [%{type: "ErlangError", value: "Erlang error: :task_crashed"}]
 
       assert report.message ==
         String.trim("""

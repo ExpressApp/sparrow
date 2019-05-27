@@ -16,8 +16,7 @@ defmodule Integration.GenServerTest do
       assert_receive report = %Sparrow.Event{extra: %{state: _}}
 
       assert crash.exception ==
-        [%{type: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}",
-           value: "(exit) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
       assert crash.message ==
         String.trim("""
@@ -40,8 +39,7 @@ defmodule Integration.GenServerTest do
         ]
 
       assert report.exception ==
-        [%{type: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}",
-           value: "(exit) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
       assert report.message ==
         String.trim("""
@@ -70,8 +68,7 @@ defmodule Integration.GenServerTest do
       assert_receive report = %Sparrow.Event{extra: %{state: _}}
 
       assert crash.exception ==
-        [%{type: "{:bad_return_value, :throwed}",
-           value: "(exit) bad return value: :throwed"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bad_return_value, :throwed}"}]
 
       assert crash.message ==
         String.trim("""
@@ -90,8 +87,7 @@ defmodule Integration.GenServerTest do
         ]
 
       assert report.exception ==
-        [%{type: "{:bad_return_value, :throwed}",
-           value: "(exit) bad return value: :throwed"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bad_return_value, :throwed}"}]
 
       assert report.message ==
         String.trim("""
@@ -181,7 +177,7 @@ defmodule Integration.GenServerTest do
           %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
         ]
 
-      assert report.exception == [%{type: "{:badmatch, 2}", value: "(exit) {:badmatch, 2}"}]
+      assert report.exception == [%{type: "MatchError", value: "no match of right hand side value: 2"}]
 
       assert report.message ==
         String.trim("""
@@ -210,8 +206,7 @@ defmodule Integration.GenServerTest do
       assert_receive report = %Sparrow.Event{extra: %{state: _}}
 
       assert crash.exception ==
-        [%{type: "{:bad_return_value, :bad_return}",
-           value: "(exit) bad return value: :bad_return"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bad_return_value, :bad_return}"}]
 
       assert crash.message ==
         String.trim("""
@@ -230,8 +225,7 @@ defmodule Integration.GenServerTest do
         ]
 
       assert report.exception ==
-        [%{type: "{:bad_return_value, :bad_return}",
-           value: "(exit) bad return value: :bad_return"}]
+        [%{type: "ErlangError", value: "Erlang error: {:bad_return_value, :bad_return}"}]
 
       assert report.message ==
         String.trim("""
@@ -323,7 +317,7 @@ defmodule Integration.GenServerTest do
     test "with simple exception" do
       assert_receive %Sparrow.Event{
         exception: [
-          %{type: "{:bad_return_value, :bad_return}", value: "(exit) bad return value: :bad_return"}
+          %{type: "ErlangError", value: "Erlang error: {:bad_return_value, :bad_return}"}
         ]
       }
     end
