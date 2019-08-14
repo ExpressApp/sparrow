@@ -110,8 +110,14 @@ defmodule Sparrow.Catcher do
 
   # ...
 
+  if function_exported?(Logger.Config, :__data__, 0) do
+    @logger_translators_fun :__data__
+  else
+    @logger_translators_fun :translation_data
+  end
+
   defp translate(kind, data) do
-    %{translators: translators} = Logger.Config.__data__()
+    %{translators: translators} = apply(Logger.Config, @logger_translators_fun, [])
 
     translate(translators, kind, data)
   end
