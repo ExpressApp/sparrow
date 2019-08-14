@@ -110,7 +110,7 @@ defmodule Sparrow.Event do
   end
 
   defp encode_extra(%__MODULE__{extra: extra} = event) do
-    %__MODULE__{event | extra: Enum.into(extra, %{}, fn({k, v}) -> {k, inspect(v)} end)}
+    %__MODULE__{event | extra: Enum.into(extra, %{}, fn({k, v}) -> {k, inspect(v, pretty: true)} end)}
   end
 
   defp truncate_message(%__MODULE__{message: message} = event) do
