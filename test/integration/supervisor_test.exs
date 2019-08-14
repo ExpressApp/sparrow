@@ -20,7 +20,7 @@ defmodule Integration.SupervisorTest do
       assert_receive sup_report = %Sparrow.Event{}
 
       assert crash.exception ==
-        [%{type: "ErlangError", value: "Erlang error: {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
+        [%{type: "ErlangError", value: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
       assert crash.message =~
         String.trim("""
@@ -43,7 +43,7 @@ defmodule Integration.SupervisorTest do
         ]
 
       assert gs_report.exception ==
-        [%{type: "ErlangError", value: "Erlang error: {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
+        [%{type: "ErlangError", value: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
       assert gs_report.message =~
         String.trim("""
@@ -65,7 +65,7 @@ defmodule Integration.SupervisorTest do
         ]
 
       assert sup_report.exception ==
-        [%{type: "ErlangError", value: "Erlang error: {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
+        [%{type: "ErlangError", value: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
       assert sup_report.message ==
         String.trim("""

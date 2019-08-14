@@ -40,7 +40,7 @@ defmodule Sparrow.Event.Reducers.RanchTest do
   test "reason without stacktrace", %{conn: conn, event: event} do
     assert event = Ranch.reduce(log_event(log_report(conn, {:timeout, {:m, :f, [:a1, :a2]}})), event)
 
-    assert event.exception == [%{type: "ErlangError", value: "Erlang error: {:timeout, {:m, :f, [:a1, :a2]}}"}]
+    assert event.exception == [%{type: "ErlangError", value: "{:timeout, {:m, :f, [:a1, :a2]}}"}]
     assert event.stacktrace.frames == []
 
     assert event.extra == %{plug: MyAppWeb.Endpoint}

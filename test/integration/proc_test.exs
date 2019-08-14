@@ -22,7 +22,7 @@ defmodule Integration.ProcTest do
       assert_receive %Sparrow.Event{exception: exception, message: message, stacktrace: %{frames: frames}}
 
       assert exception ==
-        [%{type: "ErlangError", value: "Erlang error: {:nocatch, {:error, :reason}}"}]
+        [%{type: "ErlangError", value: "{:nocatch, {:error, :reason}}"}]
 
       assert message ==
         String.trim("""

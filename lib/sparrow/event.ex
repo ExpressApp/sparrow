@@ -142,6 +142,14 @@ defmodule Sparrow.Event do
     inspect(error)
   end
 
+  defp exception_message(_kind, %ErlangError{original: message}) when is_binary(message) do
+    message
+  end
+
+  defp exception_message(_kind, %ErlangError{original: message}) do
+    inspect(message)
+  end
+
   defp exception_message(_kind, %{__exception__: true} = exception) do
     Exception.message(exception)
   end
