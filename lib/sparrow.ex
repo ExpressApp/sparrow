@@ -1,4 +1,8 @@
 defmodule Sparrow do
+  @moduledoc """
+  Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/doc/man/logger.html).
+  """
+
   @compile {:inline, current_stacktrace: 0}
 
   def capture(message, opts \\ []) do
@@ -13,6 +17,7 @@ defmodule Sparrow do
 
   # reducer helpers
 
+  @doc false
   def format_reason({maybe_exception, [_ | _] = maybe_stacktrace} = reason) do
     if Enum.all?(maybe_stacktrace, &stacktrace_entry?/1) do
       {maybe_exception, maybe_stacktrace}
@@ -21,6 +26,7 @@ defmodule Sparrow do
     end
   end
 
+  @doc false
   def format_reason(reason) do
     {reason, []}
   end
@@ -37,7 +43,7 @@ defmodule Sparrow do
     false
   end
 
-  def current_stacktrace do
+  defp current_stacktrace do
     case Process.info(self(), :current_stacktrace) do
       {:current_stacktrace, [{Process, :info, 2, _}, {Sparrow, :capture, 2, _} | stacktrace]} -> stacktrace
       {:current_stacktrace, stacktrace} -> stacktrace

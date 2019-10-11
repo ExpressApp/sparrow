@@ -1,4 +1,8 @@
 defmodule Sparrow.Event do
+  @moduledoc """
+  Helpers to form catched error event to Sentry's acceptable format. Use it if you want to make your own reducer.
+  """
+
   @type t :: %Sparrow.Event{}
 
   @rfc_4122_variant10 2
