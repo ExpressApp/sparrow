@@ -31,9 +31,10 @@ defmodule Sparrow.MixProject do
       {:hackney, ">= 1.8.0"},
       {:jason, ">= 0.0.0", optional: true},
 
-      {:mox, "~> 0.5", only: [:test]},
-      {:plug, "~> 1.7", only: [:test]},
-      {:plug_cowboy, "~> 2.0", only: [:test]},
+      {:mox, "~> 0.5", only: :test},
+      {:plug, "~> 1.7", only: :test},
+      {:plug_cowboy, "~> 2.0", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
