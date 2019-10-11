@@ -2,7 +2,7 @@
 
 ---
 
-Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/doc/man/logger.html).
+Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/doc/man/logger.html). Requires Erlang 21.0 and Elixir 1.7 and later.
 
 ---
 

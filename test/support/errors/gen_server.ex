@@ -32,8 +32,4 @@ defmodule Sparrow.Support.GenServer do
   def handle_info(:badmatch, state) do
     1 = state.b
   end
-
-  def handle_info(:badarg, _state) do
-    send(nil, :message)
-  end
 end
