@@ -98,6 +98,15 @@ defmodule SparrowTest do
 
       assert {:ok, _id} = Sparrow.capture(message, dsn: "http://public:secret@proxy/service/suffix/31")
     end
+
+    test "returns :dsn_empty when DSN id empty" do
+      assert {:error, :dsn_empty} == Sparrow.capture("test message", dsn: nil)
+      assert {:error, :dsn_empty} == Sparrow.capture("test message", dsn: "")
+    end
+
+    test "returns :dsn_invalid when DSN id invalid" do
+      assert {:error, :dsn_invalid} == Sparrow.capture("test message", dsn: "invalid dsn")
+    end
   end
 
   defp decode(binary) do

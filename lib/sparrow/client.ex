@@ -65,11 +65,11 @@ defmodule Sparrow.Client do
   end
 
   def get_dsn(opts) do
-    parse_dsn(Keyword.get(opts, :dsn, Sparrow.dsn()))
+    parse_dsn(Keyword.get_lazy(opts, :dsn, &Sparrow.dsn/0))
   end
 
   defp parse_dsn(val) when val in [nil, ""] do
-    {:error, :invalid_dsn}
+    {:error, :dsn_empty}
   end
 
   defp parse_dsn(dsn) do
@@ -78,7 +78,7 @@ defmodule Sparrow.Client do
         {:ok, scheme <> uri <> "/api/store/", public, secret, project}
 
       _ ->
-        {:error, :invalid_dsn}
+        {:error, :dsn_invalid}
     end
   end
 end
