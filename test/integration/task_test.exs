@@ -27,8 +27,8 @@ defmodule Integration.TaskTest do
         Process #{inspect(pid)} terminating
         ** (exit) :task_crashed
             test/integration/task_test.exs:16: anonymous fn/0 in Integration.TaskTest."test crashed with exit"/1
-            (elixir) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:elixir)}) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: anonymous fn/0 in Integration.TaskTest."test crashed with exit"/1
         Ancestors: [Integration.TaskTest,
         """)
@@ -70,8 +70,8 @@ defmodule Integration.TaskTest do
         Process #{inspect(pid)} terminating
         ** (RuntimeError) test crash
             test/integration/task_test.exs:59: anonymous fn/0 in Integration.TaskTest."test crashed with raise"/1
-            (elixir) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:elixir)}) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: anonymous fn/0 in Integration.TaskTest."test crashed with raise"/1
         Ancestors: [Integration.TaskTest,
         """)
@@ -92,8 +92,8 @@ defmodule Integration.TaskTest do
         ** (exit) an exception was raised:
             ** (RuntimeError) test crash
                 test/integration/task_test.exs:59: anonymous fn/0 in Integration.TaskTest.\"test crashed with raise\"/1
-                (elixir) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
-                (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+                (#{appb(:elixir)}) lib/task/supervised.ex:90: Task.Supervised.invoke_mfa/2
+                (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Pid: #{inspect(pid)}
         Start Call: Task.Supervised.start_link/?
         """)

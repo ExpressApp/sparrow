@@ -26,10 +26,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         Process #{inspect(Sparrow.Support.GenServer)} (#{inspect(pid)}) terminating
         ** (exit) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (sparrow) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [Sparrow.Support.Supervisor,
         """)
@@ -49,10 +49,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         GenServer #{inspect(Sparrow.Support.GenServer)} terminating
         ** (stop) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (sparrow) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :exit
         """)
 
@@ -93,10 +93,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         Process #{inspect(Sparrow.Support.GenServer)} (#{inspect(pid)}) terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [Sparrow.Support.Supervisor,
         """)
@@ -116,10 +116,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         GenServer #{inspect(Sparrow.Support.GenServer)} terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :raise
         """)
 
@@ -139,10 +139,10 @@ defmodule Integration.SupervisorTest do
         Child #{inspect(Sparrow.Support.GenServer)} of Supervisor #{inspect(Sparrow.Support.Supervisor)} terminated
         ** (exit) an exception was raised:
             ** (ArgumentError) argument error
-                (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-                (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-                (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-                (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+                (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+                (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+                (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+                (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Pid: #{inspect(pid)}
         Start Call: #{inspect(Sparrow.Support.GenServer)}.start_link([name: #{inspect(Sparrow.Support.GenServer)}])
         """)
@@ -171,10 +171,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         Process #{inspect(Sparrow.Support.GenServer)} (#{inspect(pid)}) terminating
         ** (MatchError) no match of right hand side value: 2
-            (sparrow) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [Sparrow.Support.Supervisor,
         """)
@@ -194,10 +194,10 @@ defmodule Integration.SupervisorTest do
         String.trim("""
         GenServer #{inspect(Sparrow.Support.GenServer)} terminating
         ** (MatchError) no match of right hand side value: 2
-            (sparrow) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :badmatch
         """)
 
@@ -217,10 +217,10 @@ defmodule Integration.SupervisorTest do
         Child #{inspect(Sparrow.Support.GenServer)} of Supervisor #{inspect(Sparrow.Support.Supervisor)} terminated
         ** (exit) an exception was raised:
             ** (MatchError) no match of right hand side value: 2
-                (sparrow) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-                (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-                (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-                (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+                (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
+                (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+                (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+                (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Pid: #{inspect(pid)}
         Start Call: #{inspect(Sparrow.Support.GenServer)}.start_link([name: #{inspect(Sparrow.Support.GenServer)}])
         """)

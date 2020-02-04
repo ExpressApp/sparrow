@@ -6,6 +6,7 @@ defmodule Sparrow.Case do
   using do
     quote do
       import Mox
+      import Sparrow.Case
     end
   end
 
@@ -18,5 +19,13 @@ defmodule Sparrow.Case do
     on_exit(fn ->
       Application.put_env(:sparrow, :client, old_client)
     end)
+  end
+
+  def appb(name) do
+    if Version.compare(System.version(), "1.10.0") == :lt do
+      to_string(name)
+    else
+      "#{name} #{Application.spec(name)[:vsn]}"
+    end
   end
 end

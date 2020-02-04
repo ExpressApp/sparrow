@@ -22,10 +22,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (sparrow) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -45,10 +45,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (stop) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (sparrow) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :exit
         """)
 
@@ -74,8 +74,8 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) bad return value: :throwed
-            (stdlib) gen_server.erl:755: :gen_server.handle_common_reply/8
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:stdlib)}) gen_server.erl:755: :gen_server.handle_common_reply/8
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -111,10 +111,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -133,10 +133,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :raise
         """)
 
@@ -161,10 +161,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (MatchError) no match of right hand side value: 2
-            (sparrow) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -183,10 +183,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (MatchError) no match of right hand side value: 2
-            (sparrow) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :badmatch
         """)
 
@@ -212,8 +212,8 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) bad return value: :bad_return
-            (stdlib) gen_server.erl:755: :gen_server.handle_common_reply/8
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:stdlib)}) gen_server.erl:755: :gen_server.handle_common_reply/8
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -258,10 +258,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         Process #{inspect(name)} (#{inspect(pid)}) terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
@@ -280,10 +280,10 @@ defmodule Integration.GenServerTest do
         String.trim("""
         GenServer #{inspect(name)} terminating
         ** (ArgumentError) argument error
-            (sparrow) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (stdlib) gen_server.erl:637: :gen_server.try_dispatch/4
-            (stdlib) gen_server.erl:711: :gen_server.handle_msg/6
-            (stdlib) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
         Last message: :raise
         """)
 
