@@ -110,16 +110,27 @@ defmodule Sparrow.Catcher do
 
   # ...
 
-  if function_exported?(Logger.Config, :__data__, 0) do
-    @logger_translators_fun :__data__
+  if Version.compare(System.version(), "1.10.0") == :lt do
+    if function_exported?(Logger.Config, :__data__, 0) do
+      @logger_translators_fun :__data__
+    else
+      @logger_translators_fun :translation_data
+    end
+
+    defp translate(kind, data) do
+      Logger.Config
+      |> apply(@logger_translators_fun, [])
+      |> Map.fetch!(:translators)
+      |> translate(kind, data)
+    end
   else
-    @logger_translators_fun :translation_data
-  end
+    defp translate(kind, data) do
+      {:ok, config} = :logger.get_handler_config(Logger)
 
-  defp translate(kind, data) do
-    %{translators: translators} = apply(Logger.Config, @logger_translators_fun, [])
-
-    translate(translators, kind, data)
+      config
+      |> get_in([:config, :translators])
+      |> translate(kind, data)
+    end
   end
 
   defp translate([{mod, fun} | t], kind, data) do
