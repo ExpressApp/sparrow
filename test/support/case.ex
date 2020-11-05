@@ -28,4 +28,8 @@ defmodule Sparrow.Case do
       "#{name} #{Application.spec(name)[:vsn]}"
     end
   end
+
+  def trim_lineno(term) when is_binary(term) do
+    String.replace(term, ~r/\:(\d+)\:/, "")
+  end
 end
