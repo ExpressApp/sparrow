@@ -1,4 +1,4 @@
-# Sparrow [![Build Status](https://img.shields.io/travis/ExpressApp/sparrow.svg)](https://travis-ci.org/ExpressApp/sparrow) [![Hex.pm](https://img.shields.io/hexpm/v/sparrow.svg)](https://hex.pm/packages/sparrow)
+# Sparrow [![Build Status](https://img.shields.io/travis/ExpressApp/sparrow.svg)](https://travis-ci.org/ExpressApp/sparrow) [![Hex.pm](https://img.shields.io/hexpm/v/sparrow.svg)](https://hex.pm/packages/sparrow) [![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/sparrow/) [![Total Download](https://img.shields.io/hexpm/dt/sparrow.svg)](https://hex.pm/packages/sparrow) [![License](https://img.shields.io/hexpm/l/sparrow.svg)](https://hex.pm/packages/sparrow) [![Last Updated](https://img.shields.io/github/last-commit/ExpressApp/sparrow.svg)](https://github.com/ExpressApp/sparrow/commits/master)
 
 ---
 
@@ -22,31 +22,31 @@ Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/do
 
 ## Installation
 
-1. Add `sparrrow` to your list of dependencies in `mix.exs`:
+1.  Add `sparrrow` to your list of dependencies in `mix.exs`:
 
-```elixir
-def deps do
-  [
-    {:sparrow, "~> 1.0"}
-  ]
-end
-```
+    ```elixir
+    def deps do
+      [
+        {:sparrow, "~> 1.0"}
+      ]
+    end
+    ```
 
-2. Add configuration to your app:
+2.  Add configuration to your app:
 
-```elixir
-# config/config.exs
+    ```elixir
+    # config/config.exs
 
-config :sparrow,
-  dsn: "your_sentry_dsn",
-  # optional configuration
-  server_name: "server_name",
-  release: "1.14.3-rc.3",
-  tags: %{
-    some: "of",
-    your: "tags",
-  }
-```
+    config :sparrow,
+      dsn: "your_sentry_dsn",
+      # optional configuration
+      server_name: "server_name",
+      release: "1.14.3-rc.3",
+      tags: %{
+        some: "of",
+        your: "tags",
+      }
+    ```
 
 ---
 
