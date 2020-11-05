@@ -18,47 +18,45 @@ defmodule Integration.GenServerTest do
       assert crash.exception ==
         [%{type: "ErlangError", value: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib"},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib"},
+        %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = crash.stacktrace.frames
 
       assert report.exception ==
         [%{type: "ErlangError", value: "{:bang, %{very_complex_exit_message: <<1, 2, 3>>}}"}]
 
-      assert report.message ==
+      assert trim_lineno(report.message) ==
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (stop) {:bang, %{very_complex_exit_message: <<1, 2, 3>>}}
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:21: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Last message: :exit
         """)
 
-      assert report.stacktrace.frames ==
-        [
-          %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib"},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{vars: %{}, filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib"},
+        %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 21, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = report.stacktrace.frames
     end
 
     test "throw", %{pid: pid} do
@@ -70,21 +68,20 @@ defmodule Integration.GenServerTest do
       assert crash.exception ==
         [%{type: "ErlangError", value: "{:bad_return_value, :throwed}"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) bad return value: :throwed
-            (#{appb(:stdlib)}) gen_server.erl:755: :gen_server.handle_common_reply/8
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_common_reply/8
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: _}
+      ] = crash.stacktrace.frames
 
       assert report.exception ==
         [%{type: "ErlangError", value: "{:bad_return_value, :throwed}"}]
@@ -107,46 +104,44 @@ defmodule Integration.GenServerTest do
 
       assert crash.exception == [%{type: "ArgumentError", value: "argument error"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (ArgumentError) argument error
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: _},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = crash.stacktrace.frames
 
       assert report.exception == [%{type: "ArgumentError", value: "argument error"}]
 
-      assert report.message ==
+      assert trim_lineno(report.message) ==
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (ArgumentError) argument error
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Last message: :raise
         """)
 
-      assert report.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = report.stacktrace.frames
     end
 
     test "badmatch", %{pid: pid} do
@@ -157,46 +152,44 @@ defmodule Integration.GenServerTest do
 
       assert crash.exception == [%{type: "MatchError", value: "no match of right hand side value: 2"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (MatchError) no match of right hand side value: 2
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: _},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = crash.stacktrace.frames
 
       assert report.exception == [%{type: "MatchError", value: "no match of right hand side value: 2"}]
 
-      assert report.message ==
+      assert trim_lineno(report.message) ==
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (MatchError) no match of right hand side value: 2
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:33: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Last message: :badmatch
         """)
 
-      assert report.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 33, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = report.stacktrace.frames
     end
 
     test "bad_return", %{pid: pid} do
@@ -208,26 +201,25 @@ defmodule Integration.GenServerTest do
       assert crash.exception ==
         [%{type: "ErlangError", value: "{:bad_return_value, :bad_return}"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(pid)} terminating
         ** (exit) bad return value: :bad_return
-            (#{appb(:stdlib)}) gen_server.erl:755: :gen_server.handle_common_reply/8
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_common_reply/8
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: 755}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_common_reply/8", lineno: _}
+      ] = crash.stacktrace.frames
 
       assert report.exception ==
         [%{type: "ErlangError", value: "{:bad_return_value, :bad_return}"}]
 
-      assert report.message ==
+      assert trim_lineno(report.message) ==
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (stop) bad return value: :bad_return
@@ -254,46 +246,44 @@ defmodule Integration.GenServerTest do
 
       assert crash.exception == [%{type: "ArgumentError", value: "argument error"}]
 
-      assert crash.message ==
+      assert trim_lineno(crash.message) ==
         String.trim("""
         Process #{inspect(name)} (#{inspect(pid)}) terminating
         ** (ArgumentError) argument error
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Initial Call: Sparrow.Support.GenServer.init/1
         Ancestors: [#{inspect(self())}]
         """)
 
-      assert crash.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: 711},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", module: ":gen_server", vars: %{}, function: ":gen_server.handle_msg/6", lineno: _},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] = crash.stacktrace.frames
 
       assert report.exception == [%{type: "ArgumentError", value: "argument error"}]
 
-      assert report.message ==
+      assert trim_lineno(report.message) ==
         String.trim("""
         GenServer #{inspect(name)} terminating
         ** (ArgumentError) argument error
-            (#{appb(:sparrow)}) test/support/errors/gen_server.ex:29: Sparrow.Support.GenServer.handle_info/2
-            (#{appb(:stdlib)}) gen_server.erl:637: :gen_server.try_dispatch/4
-            (#{appb(:stdlib)}) gen_server.erl:711: :gen_server.handle_msg/6
-            (#{appb(:stdlib)}) proc_lib.erl:249: :proc_lib.init_p_do_apply/3
+            (#{appb(:sparrow)}) test/support/errors/gen_server.ex Sparrow.Support.GenServer.handle_info/2
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.try_dispatch/4
+            (#{appb(:stdlib)}) gen_server.erl :gen_server.handle_msg/6
+            (#{appb(:stdlib)}) proc_lib.erl :proc_lib.init_p_do_apply/3
         Last message: :raise
         """)
 
-      assert report.stacktrace.frames ==
-        [
-          %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: 249, module: ":proc_lib", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: 711, module: ":gen_server", vars: %{}},
-          %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: 637, module: ":gen_server", vars: %{}},
-          %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
-        ]
+      assert [
+        %{filename: "proc_lib.erl", function: ":proc_lib.init_p_do_apply/3", lineno: _, module: ":proc_lib", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.handle_msg/6", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "gen_server.erl", function: ":gen_server.try_dispatch/4", lineno: _, module: ":gen_server", vars: %{}},
+        %{filename: "test/support/errors/gen_server.ex", function: "Sparrow.Support.GenServer.handle_info/2", lineno: 29, module: "Sparrow.Support.GenServer", vars: %{}}
+      ] =  report.stacktrace.frames
     end
   end
 
@@ -325,7 +315,7 @@ defmodule Integration.GenServerTest do
     test "with message", %{pid: pid} do
       assert_receive %Sparrow.Event{message: message}
 
-      assert message ==
+      assert trim_lineno(message) ==
         String.trim("""
         GenServer #{inspect(pid)} terminating
         ** (stop) bad return value: :bad_return

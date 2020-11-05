@@ -22,11 +22,11 @@ defmodule SparrowTest do
         assert %{"stacktrace" => %{"frames" => stacktrace}} = decode(body)
 
         assert [
-          %{"filename" => "lib/ex_unit/runner.ex", "function" => "anonymous fn/4 in ExUnit.Runner.spawn_test_monitor/4", "lineno" => 306, "module" => "ExUnit.Runner", "vars" => %{}},
-          %{"filename" => "timer.erl", "function" => ":timer.tc/1", "lineno" => 166, "module" => ":timer", "vars" => %{}},
-          %{"filename" => "lib/ex_unit/runner.ex", "function" => "ExUnit.Runner.exec_test/1", "lineno" => 355, "module" => "ExUnit.Runner", "vars" => %{}},
+          %{"filename" => "lib/ex_unit/runner.ex", "function" => "anonymous fn/4 in ExUnit.Runner.spawn_test_monitor/4", "lineno" => _, "module" => "ExUnit.Runner", "vars" => %{}},
+          %{"filename" => "timer.erl", "function" => ":timer.tc/1", "lineno" => _, "module" => ":timer", "vars" => %{}},
+          %{"filename" => "lib/ex_unit/runner.ex", "function" => "ExUnit.Runner.exec_test/1", "lineno" => _, "module" => "ExUnit.Runner", "vars" => %{}},
           %{"filename" => "test/sparrow_test.exs", "function" => "SparrowTest.\"test #capture contains stacktrace started from current location\"/1", "lineno" => 34, "module" => "SparrowTest", "vars" => %{}}
-        ] == stacktrace
+        ] = stacktrace
 
         {:ok, ~s({"id":0})}
       end)
