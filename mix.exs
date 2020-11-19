@@ -1,18 +1,22 @@
 defmodule Sparrow.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/ExpressApp/sparrow"
+  @version "1.1.1"
+
   def project do
     [
       app: :sparrow,
-      version: "1.1.1",
+      version: @version,
       elixir: "~> 1.9",
-      elixirc_paths: elixirc_paths(Mix.env),
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
 
       # Hex
       description: description(),
       package: package(),
+      docs: docs()
     ]
   end
 
@@ -24,13 +28,12 @@ defmodule Sparrow.MixProject do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp deps do
     [
       {:hackney, ">= 1.8.0"},
       {:jason, ">= 0.0.0", optional: true},
-
       {:mox, "~> 0.5", only: :test},
       {:plug, "~> 1.7", only: :test},
       {:plug_cowboy, "~> 2.0", only: :test},
@@ -47,7 +50,19 @@ defmodule Sparrow.MixProject do
       name: :sparrow,
       maintainers: ["Yuri Artemev"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/ExpressApp/sparrow"}
+      links: %{
+        "Changelog" => "#{@source_url}/blob/master/CHANGELOG.md",
+        "GitHub" => @source_url
+      }
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      source_ref: "v#{@version}",
+      source_url: @source_url,
+      extras: ["README.md", "CHANGELOG.md"]
     ]
   end
 end
