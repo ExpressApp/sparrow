@@ -19,9 +19,6 @@ defmodule Sparrow.Catcher do
     do
       {:ok, id}
     else
-      {:error, :dsn_invalid} ->
-        Logger.warn("sparrow has invalid DSN configuration")
-
       any ->
         any
     end

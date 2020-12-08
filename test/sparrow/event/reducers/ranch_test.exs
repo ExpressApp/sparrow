@@ -31,7 +31,7 @@ defmodule Sparrow.Event.Reducers.RanchTest do
     assert event.request == %{
       url: "http://www.example.com/path",
       method: "GET",
-      headers: %{"content-type" => "multipart/mixed; boundary=plug_conn_test"},
+      headers: %{},
       query_string: "",
       env: %{key: "{:some, [:value, 1, \"*\"]}"}
     }
@@ -48,7 +48,7 @@ defmodule Sparrow.Event.Reducers.RanchTest do
     assert event.request == %{
       url: "http://www.example.com/path",
       method: "GET",
-      headers: %{"content-type" => "multipart/mixed; boundary=plug_conn_test"},
+      headers: %{},
       query_string: "",
       env: %{key: "{:some, [:value, 1, \"*\"]}"}
     }
