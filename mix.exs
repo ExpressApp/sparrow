@@ -2,7 +2,7 @@ defmodule Sparrow.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/ExpressApp/sparrow"
-  @version "1.1.1"
+  @version "1.1.2"
 
   def project do
     [
