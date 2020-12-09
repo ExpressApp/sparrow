@@ -26,6 +26,14 @@ defmodule Integration.LoggerTest do
         assert message == "message"
         assert frames == []
       end
+
+      test "error with sparrow: false option" do
+        spawn_link(fn ->
+          Logger.error("message", sparrow: false)
+        end)
+
+        refute_receive %Sparrow.Event{}
+      end
     end
   end
 

@@ -7,6 +7,10 @@ defmodule Sparrow.Catcher do
   Hook required by Erlang `:logger`, should be fast as possible, because it calls on the client process
   """
   @spec log(:logger.log_event(), config :: map) :: any
+  def log(%{meta: %{sparrow: false}}, _config) do
+    :skip
+  end
+
   def log(log, config) do
     send(Sparrow.Coordinator, {__MODULE__, log, config})
   end

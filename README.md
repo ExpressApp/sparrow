@@ -14,7 +14,7 @@ Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/do
 
 ## Features
 
-* Listen for events in [logger](http://erlang.org/doc/man/logger.html) (instead of deprecated [error_logger](http://erlang.org/doc/man/error_logger.html) or [Logger](https://hexdocs.pm/logger/Logger.html));
+* Listen for events in [logger](http://erlang.org/doc/man/logger.html) (instead of deprecated [error_logger](http://erlang.org/doc/man/error_logger.html) and [Logger](https://hexdocs.pm/logger/Logger.html));
 * Uses [reducers](/lib/sparrow/event/reducer.ex) to handle formatted erlang reports, like for [Ranch](/lib/sparrow/event/reducers/ranch.ex) (you can use your own reducers);
 * Custom [HTTP client](/lib/sparrow/client/behaviour.ex) implementations via configuration (hackney by default);
 
@@ -53,6 +53,12 @@ Sentry client for Elixir based on the new Erlang's [logger](http://erlang.org/do
 ## Usage
 
 After installation and configuration, Sparrow will catch the error reports in your app. But there are some insignificant (for most of us) features that are not documented yet, like custom reducers and HTTP client.
+
+Every `Logger.error` call captured too in Elixir 1.11.x and better, but you can disable this behaviour by providing `sparrow: false` in metadata, like:
+
+```elixir
+Logger.error("message", sparrow: false)
+```
 
 ---
 
