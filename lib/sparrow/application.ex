@@ -16,6 +16,13 @@ defmodule Sparrow.Application do
   end
 
   defp attach_to_logger_handler do
-    :logger.add_handler(Sparrow, Sparrow.Catcher, %{level: :error})
+    :logger.add_handler(Sparrow, Sparrow.Catcher, handler_config())
+  end
+
+  defp handler_config do
+    :sparrow
+    |> Application.get_env(:handler_config, [])
+    |> Enum.into(%{})
+    |> Map.put_new(:level, :error)
   end
 end
