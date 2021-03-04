@@ -53,8 +53,40 @@ defmodule Integration.LoggerTest do
         assert_receive %Sparrow.Event{message: "emergency"}
       end
 
+      test "level: :error, level_logger: :critical" do
+        swap_handler_config(level: :error, level_logger: :critical)
+
+        spawn_link(fn ->
+          Logger.error("error")
+          Logger.critical("critical")
+          Logger.alert("alert")
+          Logger.emergency("emergency")
+        end)
+
+        refute_receive %Sparrow.Event{message: "error"}
+        assert_receive %Sparrow.Event{message: "critical"}
+        assert_receive %Sparrow.Event{message: "alert"}
+        assert_receive %Sparrow.Event{message: "emergency"}
+      end
+
       test "level: :emergency" do
         swap_handler_config(level: :emergency)
+
+        spawn_link(fn ->
+          Logger.error("error")
+          Logger.critical("critical")
+          Logger.alert("alert")
+          Logger.emergency("emergency")
+        end)
+
+        refute_receive %Sparrow.Event{message: "error"}
+        refute_receive %Sparrow.Event{message: "critical"}
+        refute_receive %Sparrow.Event{message: "alert"}
+        assert_receive %Sparrow.Event{message: "emergency"}
+      end
+
+      test "level: :error, level_logger: :emergency" do
+        swap_handler_config(level: :error, level_logger: :emergency)
 
         spawn_link(fn ->
           Logger.error("error")

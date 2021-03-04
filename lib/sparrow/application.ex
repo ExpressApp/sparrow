@@ -24,5 +24,7 @@ defmodule Sparrow.Application do
     |> Application.get_env(:handler_config, [])
     |> Enum.into(%{})
     |> Map.put_new(:level, :error)
+    |> Map.put_new(:level_logger, :error)
+    |> Map.put_new(:level_report, :error)
   end
 end

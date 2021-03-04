@@ -15,14 +15,18 @@ defmodule Sparrow.Catcher do
     send(Sparrow.Coordinator, {__MODULE__, log, config})
   end
 
-  def async_log(%{level: _, msg: msg, meta: meta} = log, config) do
-    with {{kind, reason, stacktrace, extra}, message} <- reason_stacktrace(msg),
+  def async_log(%{level: level, msg: msg, meta: meta} = log, config) do
+    with {:level, true} <- compare_levels(level, msg, config),
+         {{kind, reason, stacktrace, extra}, message} <- reason_stacktrace(msg),
          %Sparrow.Event{} = event <- make_event(kind, reason, stacktrace, extra, message, meta, log),
          _ = maybe_notify(config, event),
          {:ok, id} <- Sparrow.Client.send(event)
     do
       {:ok, id}
     else
+      {:level, _} ->
+        :skip
+
       any ->
         any
     end
@@ -69,6 +73,18 @@ defmodule Sparrow.Catcher do
   end
 
   # ...
+
+  defp compare_levels(level, {:report, _}, %{level_report: level_report}) do
+    {:level, :logger.compare_levels(level, level_report) in [:gt, :eq]}
+  end
+
+  defp compare_levels(level, _msg, %{level_logger: level_logger}) do
+    {:level, :logger.compare_levels(level, level_logger) in [:gt, :eq]}
+  end
+
+  defp compare_levels(_level, _msg, _config) do
+    {:level, true}
+  end
 
   defp reason_stacktrace({:string, string}) do
     {{:error, string, [], %{}}, string}
