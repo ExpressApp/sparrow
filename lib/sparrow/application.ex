@@ -1,6 +1,5 @@
 defmodule Sparrow.Application do
   @moduledoc false
-
   use Application
 
   def start(_type, _args) do
@@ -15,8 +14,14 @@ defmodule Sparrow.Application do
     Supervisor.start_link(children, opts)
   end
 
-  defp attach_to_logger_handler do
-    :logger.add_handler(Sparrow, Sparrow.Catcher, handler_config())
+  def attach_to_logger_handler do
+    case Sparrow.DSN.parse(Sparrow.dsn()) do
+      {:ok, _} ->
+        :logger.add_handler(Sparrow, Sparrow.Catcher, handler_config())
+
+      {:error, _} ->
+        :ok
+    end
   end
 
   defp handler_config do

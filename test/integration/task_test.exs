@@ -1,5 +1,5 @@
 defmodule Integration.TaskTest do
-  use Sparrow.IntegrationCase, async: false
+  use Sparrow.IntegrationCase
 
   setup do
     {:ok, pid} = start_supervised({Task.Supervisor, name: __MODULE__})

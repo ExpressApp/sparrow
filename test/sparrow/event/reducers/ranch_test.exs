@@ -1,5 +1,5 @@
 defmodule Sparrow.Event.Reducers.RanchTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Sparrow.Event.Reducers.Ranch
 

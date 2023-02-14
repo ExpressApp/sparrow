@@ -1,5 +1,5 @@
 defmodule SparrowTest do
-  use Sparrow.Case, async: false
+  use Sparrow.Case
 
   doctest Sparrow
 
@@ -105,7 +105,8 @@ defmodule SparrowTest do
     end
 
     test "returns :dsn_invalid when DSN id invalid" do
-      assert {:error, :dsn_invalid} == Sparrow.capture("test message", dsn: "invalid dsn")
+      assert {:error, {:dsn_invalid, %URI{}}} =
+        Sparrow.capture("test message", dsn: "invalid dsn")
     end
   end
 

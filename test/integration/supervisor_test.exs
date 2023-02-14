@@ -1,5 +1,5 @@
 defmodule Integration.SupervisorTest do
-  use Sparrow.IntegrationCase, async: false
+  use Sparrow.IntegrationCase
 
   setup do
     {:ok, pid} = start_supervised(Sparrow.Support.Supervisor)

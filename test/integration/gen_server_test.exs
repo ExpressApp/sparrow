@@ -1,5 +1,5 @@
 defmodule Integration.GenServerTest do
-  use Sparrow.IntegrationCase, async: false
+  use Sparrow.IntegrationCase
 
   alias Sparrow.Support.GenServer, as: GS
 
