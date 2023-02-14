@@ -1,5 +1,5 @@
 defmodule Integration.LoggerTest do
-  use Sparrow.IntegrationCase, async: false
+  use Sparrow.IntegrationCase
 
   if Version.compare(System.version(), "1.11.0") != :lt do
     require Logger

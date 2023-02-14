@@ -2,10 +2,7 @@ defmodule Sparrow.Client do
   @moduledoc false
   @behaviour Sparrow.Client.Behaviour
 
-  @dsn_regex ~r/(?<scheme>https?:\/\/)(?<public>\w+)(:(?<secret>\w+))?@(?<uri>.+)\/(?<project>.+)/iu
-  @version Mix.Project.config()[:version]
-
-  @sentry_client "sparrow-elixir/#{@version}"
+  @sentry_client "sparrow-elixir/#{Mix.Project.config()[:version]}"
   @sentry_version 7
 
   def send(%Sparrow.Event{} = event, opts \\ []) do
@@ -34,12 +31,12 @@ defmodule Sparrow.Client do
   end
 
   defp get_credentials(opts) do
-    with {:ok, endpoint, public, secret, project} <- get_dsn(opts) do
-      {:ok, endpoint, project, authorization_headers(public, secret)}
+    with {:ok, %Sparrow.DSN{endpoint: endpoint, project: project} = dsn} <- get_dsn(opts) do
+      {:ok, endpoint, project, authorization_headers(dsn)}
     end
   end
 
-  defp authorization_headers(public, secret) do
+  defp authorization_headers(%Sparrow.DSN{public: public, secret: secret}) do
     [
       {"User-Agent", @sentry_client},
       {"X-Sentry-Auth", authorization_header(public, secret)}
@@ -64,21 +61,7 @@ defmodule Sparrow.Client do
     "Sentry " <> query
   end
 
-  def get_dsn(opts) do
-    parse_dsn(Keyword.get_lazy(opts, :dsn, &Sparrow.dsn/0))
-  end
-
-  defp parse_dsn(val) when val in [nil, ""] do
-    {:error, :dsn_empty}
-  end
-
-  defp parse_dsn(dsn) do
-    case Regex.named_captures(@dsn_regex, dsn) do
-      %{"scheme" => scheme, "uri" => uri, "public" => public, "secret" => secret, "project" => project} ->
-        {:ok, scheme <> uri <> "/api/store/", public, secret, project}
-
-      _ ->
-        {:error, :dsn_invalid}
-    end
+  defp get_dsn(opts) do
+    Sparrow.DSN.parse(Keyword.get_lazy(opts, :dsn, &Sparrow.dsn/0))
   end
 end
